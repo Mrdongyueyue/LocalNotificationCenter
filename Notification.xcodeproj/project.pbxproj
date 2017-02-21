@@ -14,6 +14,7 @@
 		3C22A0251E5BE2FD00C41DB9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C22A0231E5BE2FD00C41DB9 /* LaunchScreen.storyboard */; };
 		3C22A0301E5BE2FD00C41DB9 /* NotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22A02F1E5BE2FD00C41DB9 /* NotificationTests.swift */; };
 		3C22A03B1E5BE2FD00C41DB9 /* NotificationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22A03A1E5BE2FD00C41DB9 /* NotificationUITests.swift */; };
+		3C22A04A1E5C3B4100C41DB9 /* IU1.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 3C22A0491E5C3B4100C41DB9 /* IU1.jpeg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,8 @@
 		3C22A0361E5BE2FD00C41DB9 /* NotificationUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NotificationUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C22A03A1E5BE2FD00C41DB9 /* NotificationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUITests.swift; sourceTree = "<group>"; };
 		3C22A03C1E5BE2FD00C41DB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3C22A0481E5BEC0500C41DB9 /* Notification.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Notification.entitlements; sourceTree = "<group>"; };
+		3C22A0491E5C3B4100C41DB9 /* IU1.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IU1.jpeg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,9 +100,11 @@
 		3C22A0191E5BE2FD00C41DB9 /* Notification */ = {
 			isa = PBXGroup;
 			children = (
+				3C22A0481E5BEC0500C41DB9 /* Notification.entitlements */,
 				3C22A01A1E5BE2FD00C41DB9 /* AppDelegate.swift */,
 				3C22A01C1E5BE2FD00C41DB9 /* ViewController.swift */,
 				3C22A01E1E5BE2FD00C41DB9 /* Main.storyboard */,
+				3C22A0491E5C3B4100C41DB9 /* IU1.jpeg */,
 				3C22A0211E5BE2FD00C41DB9 /* Assets.xcassets */,
 				3C22A0231E5BE2FD00C41DB9 /* LaunchScreen.storyboard */,
 				3C22A0261E5BE2FD00C41DB9 /* Info.plist */,
@@ -193,8 +198,13 @@
 				TargetAttributes = {
 					3C22A0161E5BE2FD00C41DB9 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 7WLC7DGYAW;
+						DevelopmentTeam = H874NRF4RE;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					3C22A02A1E5BE2FD00C41DB9 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -238,6 +248,7 @@
 				3C22A0251E5BE2FD00C41DB9 /* LaunchScreen.storyboard in Resources */,
 				3C22A0221E5BE2FD00C41DB9 /* Assets.xcassets in Resources */,
 				3C22A0201E5BE2FD00C41DB9 /* Main.storyboard in Resources */,
+				3C22A04A1E5C3B4100C41DB9 /* IU1.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,10 +426,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7WLC7DGYAW;
+				CODE_SIGN_ENTITLEMENTS = Notification/Notification.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = H874NRF4RE;
 				INFOPLIST_FILE = Notification/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xh.Notification;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dongzhiyue.Notification;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -428,10 +441,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7WLC7DGYAW;
+				CODE_SIGN_ENTITLEMENTS = Notification/Notification.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = H874NRF4RE;
 				INFOPLIST_FILE = Notification/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xh.Notification;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dongzhiyue.Notification;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

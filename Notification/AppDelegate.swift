@@ -7,15 +7,26 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert , .badge , .sound ], completionHandler: { (agree, error) in
+            if agree {
+                
+                // 用户允许进行通知
+                
+            }
+        })
+        
+        UNUserNotificationCenter.current().delegate = self
+        
         return true
     }
 
@@ -27,7 +38,78 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        let action = UNTextInputNotificationAction(identifier: "action", title: "textAction", options: [.destructive], textInputButtonTitle: "send", textInputPlaceholder: "placeholder")
+        let category1 = UNNotificationCategory(identifier: "category1", actions: [action], intentIdentifiers: ["action"], options: [.customDismissAction])
+        
+        let btnAction = UNNotificationAction(identifier: "btnAction", title: "btnAction", options: [.foreground])
+        let category2 = UNNotificationCategory(identifier: "category2", actions: [btnAction], intentIdentifiers: ["btnAction"], options: [.customDismissAction])
+        
+        UNUserNotificationCenter.current().setNotificationCategories([category1, category2])
+        
+        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 1, repeats: false)
+        let content = UNMutableNotificationContent()
+        content.title = "main title"
+        content.subtitle = "sub title"
+        content.sound = UNNotificationSound.`default`()
+        content.body = "body"
+        content.categoryIdentifier = "category1"
+//        content.categoryIdentifier = "category2"
+        
+        do {
+            
+            let attachment1 = try UNNotificationAttachment.init(identifier: "attachment01", url: URL.init(fileURLWithPath: Bundle.main.path(forResource: "IU1", ofType: "jpeg")!), options: [UNNotificationAttachmentOptionsThumbnailTimeKey:"???"])
+            content.attachments = [attachment1]
+            
+        } catch {
+            
+        }
+        
+        
+        
+        
+        let request = UNNotificationRequest.init(identifier: "one", content: content, trigger: trigger)
+        
+        
+        
+        UNUserNotificationCenter.current().add(request) { (error) in
+            if error == nil {
+                print("success")
+            } else {
+                print("failure \(error)")
+            }
+        }
+        
     }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print("\(userInfo)")
+        
+        completionHandler(.newData)
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        if response.isKind(of: UNTextInputNotificationResponse) {
+            
+        }
+        center.getNotificationCategories { (set) in
+            set.map({ (category) -> () in
+                
+                response.notification.request.content.categoryIdentifier
+                
+            })
+            
+        }
+        
+        response.notification.request.
+        
+        completionHandler()
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        completionHandler([.alert,.badge,.sound])
+    }
+    
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
