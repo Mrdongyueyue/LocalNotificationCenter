@@ -88,19 +88,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        if response.isKind(of: UNTextInputNotificationResponse) {
-            
-        }
-        center.getNotificationCategories { (set) in
-            set.map({ (category) -> () in
-                
-                response.notification.request.content.categoryIdentifier
-                
-            })
+        if response.isKind(of: UNTextInputNotificationResponse.classForCoder()) {
             
         }
         
-        response.notification.request.
         
         completionHandler()
     }
