@@ -52,8 +52,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         content.subtitle = "sub title"
         content.sound = UNNotificationSound.`default`()
         content.body = "body"
-        content.categoryIdentifier = "category1"
-//        content.categoryIdentifier = "category2"
+        
+        ///输入框的通知扩展
+//        content.categoryIdentifier = "category1"
+        ///按钮
+        content.categoryIdentifier = "category2"
         
         do {
             
@@ -81,15 +84,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
     }
     
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print("\(userInfo)")
-        
-        completionHandler(.newData)
-    }
-    
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         if response.isKind(of: UNTextInputNotificationResponse.classForCoder()) {
-            
+            let textResponse = response as! UNTextInputNotificationResponse
+            let alert = UIAlertController(title: textResponse.userText, message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            window?.rootViewController?.present(alert, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: response.actionIdentifier , message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            window?.rootViewController?.present(alert, animated: true, completion: nil)
         }
         
         
