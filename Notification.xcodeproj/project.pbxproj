@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C174D0C1E5D8EEC00EE2923 /* phoneRing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3C174D0B1E5D8EEC00EE2923 /* phoneRing.mp3 */; };
 		3C22A01B1E5BE2FD00C41DB9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22A01A1E5BE2FD00C41DB9 /* AppDelegate.swift */; };
 		3C22A01D1E5BE2FD00C41DB9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C22A01C1E5BE2FD00C41DB9 /* ViewController.swift */; };
 		3C22A0201E5BE2FD00C41DB9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C22A01E1E5BE2FD00C41DB9 /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3C174D0B1E5D8EEC00EE2923 /* phoneRing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = phoneRing.mp3; sourceTree = "<group>"; };
 		3C22A0171E5BE2FD00C41DB9 /* Notification.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Notification.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C22A01A1E5BE2FD00C41DB9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3C22A01C1E5BE2FD00C41DB9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				3C22A01A1E5BE2FD00C41DB9 /* AppDelegate.swift */,
 				3C22A01C1E5BE2FD00C41DB9 /* ViewController.swift */,
 				3C22A01E1E5BE2FD00C41DB9 /* Main.storyboard */,
+				3C174D0B1E5D8EEC00EE2923 /* phoneRing.mp3 */,
 				3C22A0491E5C3B4100C41DB9 /* IU1.jpeg */,
 				3C22A0211E5BE2FD00C41DB9 /* Assets.xcassets */,
 				3C22A0231E5BE2FD00C41DB9 /* LaunchScreen.storyboard */,
@@ -249,6 +252,7 @@
 				3C22A0221E5BE2FD00C41DB9 /* Assets.xcassets in Resources */,
 				3C22A0201E5BE2FD00C41DB9 /* Main.storyboard in Resources */,
 				3C22A04A1E5C3B4100C41DB9 /* IU1.jpeg in Resources */,
+				3C174D0C1E5D8EEC00EE2923 /* phoneRing.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -529,6 +533,7 @@
 				3C22A0411E5BE2FD00C41DB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3C22A0421E5BE2FD00C41DB9 /* Build configuration list for PBXNativeTarget "NotificationTests" */ = {
 			isa = XCConfigurationList;
@@ -537,6 +542,7 @@
 				3C22A0441E5BE2FD00C41DB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3C22A0451E5BE2FD00C41DB9 /* Build configuration list for PBXNativeTarget "NotificationUITests" */ = {
 			isa = XCConfigurationList;
@@ -545,6 +551,7 @@
 				3C22A0471E5BE2FD00C41DB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

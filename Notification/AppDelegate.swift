@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let content = UNMutableNotificationContent()
         content.title = "main title"
         content.subtitle = "sub title"
-        content.sound = UNNotificationSound.`default`()
+        content.sound = UNNotificationSound.init(named: "phoneRing.mp3")
         content.body = "body"
         
         ///输入框的通知扩展
