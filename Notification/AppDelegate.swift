@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }))
                     
                 alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
-                
+                self.window?.rootViewController?.present(alert, animated: true, completion: nil)
             }
         })
         
