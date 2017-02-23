@@ -19,11 +19,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert , .badge , .sound ], completionHandler: { (agree, error) in
             if agree {
-                
-                // 用户允许进行通知
+                print("用户同意APP实用化通知权限")
+            } else {
+                let alert = UIAlertController(title: "你拒绝了通知发送申请", message: "可在设置中开启", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "确定", style: .`default`, handler: { (action) in
+                    application.open(URL(string : UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: { (open) in
+                        if open {
+                            print("打开了设置页面")
+                        } else {
+                            print("设置页面打开失败")
+                        }
+                    })
+                }))
+                    
+                alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
                 
             }
         })
+        
+        let action = UNTextInputNotificationAction(identifier: "action", title: "textAction", options: [.destructive], textInputButtonTitle: "send", textInputPlaceholder: "placeholder")
+        let category1 = UNNotificationCategory(identifier: "category1", actions: [action], intentIdentifiers: ["action"], options: [.customDismissAction])
+        
+        let btnAction = UNNotificationAction(identifier: "btnAction", title: "btnAction", options: [.foreground])
+        let category2 = UNNotificationCategory(identifier: "category2", actions: [btnAction], intentIdentifiers: ["btnAction"], options: [.customDismissAction])
+        
+        UNUserNotificationCenter.current().setNotificationCategories([category1, category2])
         
         UNUserNotificationCenter.current().delegate = self
         
@@ -36,16 +56,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        let action = UNTextInputNotificationAction(identifier: "action", title: "textAction", options: [.destructive], textInputButtonTitle: "send", textInputPlaceholder: "placeholder")
-        let category1 = UNNotificationCategory(identifier: "category1", actions: [action], intentIdentifiers: ["action"], options: [.customDismissAction])
         
-        let btnAction = UNNotificationAction(identifier: "btnAction", title: "btnAction", options: [.foreground])
-        let category2 = UNNotificationCategory(identifier: "category2", actions: [btnAction], intentIdentifiers: ["btnAction"], options: [.customDismissAction])
+        ///普通的通知
+//        UNUserNotificationCenter.current().add(timeIntervalNotificationRequest()) { (error) in
+        ///固定时间的通知 类似闹钟的使用
+        UNUserNotificationCenter.current().add(calendarNotificationRequest()) { (error) in
+            if error == nil {
+                print("success")
+            } else {
+                print("failure \(error)")
+            }
+        }
         
-        UNUserNotificationCenter.current().setNotificationCategories([category1, category2])
-        
+    }
+    
+    func timeIntervalNotificationRequest() -> UNNotificationRequest {
         let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 1, repeats: false)
         let content = UNMutableNotificationContent()
         content.title = "main title"
@@ -54,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         content.body = "body"
         
         ///输入框的通知扩展
-//        content.categoryIdentifier = "category1"
+        //        content.categoryIdentifier = "category1"
         ///按钮
         content.categoryIdentifier = "category2"
         
@@ -68,20 +93,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         
+        return UNNotificationRequest.init(identifier: "one", content: content, trigger: trigger)
+    }
+    
+    func calendarNotificationRequest() -> UNNotificationRequest {
+        let calendar = Calendar.init(identifier: .chinese)
+        let otherDC = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
+        var dateComponents = DateComponents.init()
+        let interval = 2
+        //当时间每到这一秒的时候就会出现通知
+        dateComponents.second = otherDC.second! > (60 - interval) ? interval : otherDC.second! + interval
+        let trigger = UNCalendarNotificationTrigger.init(dateMatching:dateComponents , repeats: true)
         
+        let content = UNMutableNotificationContent()
+        content.title = "Hey, SB, wake up!!"
+        content.subtitle = "Quickly!!!"
+        content.sound = UNNotificationSound.init(named: "phoneRing.mp3")
+        content.body = "You'll be late!!"
         
-        let request = UNNotificationRequest.init(identifier: "one", content: content, trigger: trigger)
+        content.categoryIdentifier = "category2"
         
-        
-        
-        UNUserNotificationCenter.current().add(request) { (error) in
-            if error == nil {
-                print("success")
-            } else {
-                print("failure \(error)")
-            }
+        do {
+            
+            let attachment1 = try UNNotificationAttachment.init(identifier: "attachment01", url: URL.init(fileURLWithPath: Bundle.main.path(forResource: "IU1", ofType: "jpeg")!), options: [UNNotificationAttachmentOptionsThumbnailTimeKey:"???"])
+            content.attachments = [attachment1]
+            
+        } catch {
+            
         }
         
+        return UNNotificationRequest.init(identifier: "two", content: content, trigger: trigger)
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
