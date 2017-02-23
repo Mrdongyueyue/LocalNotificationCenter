@@ -5,7 +5,7 @@
 //  Created by 董知樾 on 2017/2/21.
 //  Copyright © 2017年 董知樾. All rights reserved.
 //
-
+//Github地址:https://github.com/Mrdongyueyue/LocalNotificationCenter
 import UIKit
 import UserNotifications
 
@@ -17,25 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert , .badge , .sound ], completionHandler: { (agree, error) in
-            if agree {
-                print("用户同意APP实用化通知权限")
-            } else {
-                let alert = UIAlertController(title: "你拒绝了通知发送申请", message: "可在设置中开启", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "确定", style: .`default`, handler: { (action) in
-                    application.open(URL(string : UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: { (open) in
-                        if open {
-                            print("打开了设置页面")
-                        } else {
-                            print("设置页面打开失败")
-                        }
-                    })
-                }))
-                    
-                alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
-                self.window?.rootViewController?.present(alert, animated: true, completion: nil)
+        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+            if settings.authorizationStatus == .notDetermined {
+                self.requestAuthorization(application)
             }
-        })
+        }
+        
         
         let action = UNTextInputNotificationAction(identifier: "action", title: "textAction", options: [.destructive], textInputButtonTitle: "send", textInputPlaceholder: "placeholder")
         let category1 = UNNotificationCategory(identifier: "category1", actions: [action], intentIdentifiers: ["action"], options: [.customDismissAction])
@@ -58,9 +45,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationDidEnterBackground(_ application: UIApplication) {
         
         ///普通的通知
-//        UNUserNotificationCenter.current().add(timeIntervalNotificationRequest()) { (error) in
+        UNUserNotificationCenter.current().add(timeIntervalNotificationRequest()) { (error) in
         ///固定时间的通知 类似闹钟的使用
-        UNUserNotificationCenter.current().add(calendarNotificationRequest()) { (error) in
+//        UNUserNotificationCenter.current().add(calendarNotificationRequest()) { (error) in
             if error == nil {
                 print("success")
             } else {
@@ -68,6 +55,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
         
+    }
+    
+    func requestAuthorization(_ application : UIApplication) -> Void {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert , .badge , .sound ], completionHandler: { (agree, error) in
+            if agree {
+                print("用户同意APP实用化通知权限")
+            } else {
+                let alert = UIAlertController(title: "你拒绝了通知发送申请", message: "可在设置中开启", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "确定", style: .`default`, handler: { (action) in
+                    application.open(URL(string : UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: { (open) in
+                        if open {
+                            print("打开了设置页面")
+                        } else {
+                            print("设置页面打开失败")
+                        }
+                    })
+                }))
+                
+                alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+                self.window?.rootViewController?.present(alert, animated: true, completion: nil)
+            }
+        })
     }
     
     func timeIntervalNotificationRequest() -> UNNotificationRequest {
