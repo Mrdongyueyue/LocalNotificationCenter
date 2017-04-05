@@ -9,8 +9,9 @@
 import UIKit
 import UserNotifications
 
+
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, JPUSHRegisterDelegate {
 
     var window: UIWindow?
 
@@ -25,14 +26,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         
         let action = UNTextInputNotificationAction(identifier: "action", title: "textAction", options: [.destructive], textInputButtonTitle: "send", textInputPlaceholder: "placeholder")
-        let category1 = UNNotificationCategory(identifier: "category1", actions: [action], intentIdentifiers: ["action"], options: [.customDismissAction])
+        let notificationTextInputCategory = UNNotificationCategory(identifier: "notificationTextInputCategory", actions: [action], intentIdentifiers: ["action"], options: [.customDismissAction])
         
         let btnAction = UNNotificationAction(identifier: "btnAction", title: "btnAction", options: [.foreground])
-        let category2 = UNNotificationCategory(identifier: "category2", actions: [btnAction], intentIdentifiers: ["btnAction"], options: [.customDismissAction])
+        let notificationButtonActionCategory = UNNotificationCategory(identifier: "notificationButtonActionCategory", actions: [btnAction], intentIdentifiers: ["btnAction"], options: [.customDismissAction])
         
-        UNUserNotificationCenter.current().setNotificationCategories([category1, category2])
+        UNUserNotificationCenter.current().setNotificationCategories([notificationTextInputCategory, notificationButtonActionCategory])
         
         UNUserNotificationCenter.current().delegate = self
+        
+        let entity = JPUSHRegisterEntity()
+        entity.types = Int(JPAuthorizationOptions.sound.rawValue | JPAuthorizationOptions.badge.rawValue | JPAuthorizationOptions.alert.rawValue)
+        JPUSHService.register(forRemoteNotificationConfig: entity, delegate: self)
+        JPUSHService.setup(withOption: launchOptions, appKey: "8cbbcb9ce2251a1b4291af4d", channel: "APP store", apsForProduction: false)
         
         return true
     }
@@ -51,9 +57,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if error == nil {
                 print("success")
             } else {
-                print("failure \(error)")
+                print("failure \(String(describing: error))")
             }
         }
+        
+        
         
     }
     
@@ -84,13 +92,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let content = UNMutableNotificationContent()
         content.title = "main title"
         content.subtitle = "sub title"
-        content.sound = UNNotificationSound.init(named: "phoneRing.mp3")
+        content.sound = UNNotificationSound.default()//init(named: "phoneRing.mp3")
         content.body = "body"
         
         ///输入框的通知扩展
-        //        content.categoryIdentifier = "category1"
+        //        content.categoryIdentifier = "notificationTextInputCategory"
         ///按钮
-        content.categoryIdentifier = "category2"
+        content.categoryIdentifier = "notificationButtonActionCategory"
         
         do {
             
@@ -117,10 +125,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let content = UNMutableNotificationContent()
         content.title = "Hey, SB, wake up!!"
         content.subtitle = "Quickly!!!"
-        content.sound = UNNotificationSound.init(named: "phoneRing.mp3")
+        content.sound = UNNotificationSound.default()//init(named: "phoneRing.mp3")
         content.body = "You'll be late!!"
         
-        content.categoryIdentifier = "category2"
+        content.categoryIdentifier = "notificationButtonActionCategory"
         
         do {
             
@@ -135,6 +143,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        JPUSHService.handleRemoteNotification(response.notification.request.content.userInfo)
+        completionHandler()
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        completionHandler([.alert,.badge,.sound])
+    }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        JPUSHService.registerDeviceToken(deviceToken)
+    }
+    
+    //MARK:~~~ JPUSHRegisterDelegate
+    func jpushNotificationCenter(_ center: UNUserNotificationCenter!, didReceive response: UNNotificationResponse!, withCompletionHandler completionHandler: (() -> Void)!) {
         if response.isKind(of: UNTextInputNotificationResponse.classForCoder()) {
             let textResponse = response as! UNTextInputNotificationResponse
             let alert = UIAlertController(title: textResponse.userText, message: nil, preferredStyle: .alert)
@@ -145,29 +173,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             window?.rootViewController?.present(alert, animated: true, completion: nil)
         }
-        
-        
         completionHandler()
     }
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        
-        completionHandler([.alert,.badge,.sound])
+    func jpushNotificationCenter(_ center: UNUserNotificationCenter!, willPresent notification: UNNotification!, withCompletionHandler completionHandler: ((Int) -> Void)!) {
+        print(notification.request.content.userInfo)
+        completionHandler(Int(UNNotificationPresentationOptions.alert.rawValue))
     }
-    
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-
-
 }
 
