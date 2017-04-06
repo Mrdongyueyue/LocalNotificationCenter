@@ -59,7 +59,7 @@ class NotificationService: UNNotificationServiceExtension, URLSessionDelegate {
             } catch  {
                 
             }
-            
+            return nil
         }
         
         
