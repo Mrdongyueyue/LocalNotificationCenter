@@ -132,7 +132,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         do {
             
-            let attachment1 = try UNNotificationAttachment.init(identifier: "attachment01", url: URL.init(fileURLWithPath: Bundle.main.path(forResource: "IU1", ofType: "jpeg")!), options: [UNNotificationAttachmentOptionsThumbnailTimeKey:"???"])
+            let attachment1 = try UNNotificationAttachment.init(identifier: "attachment01", url: URL.init(fileURLWithPath: Bundle.main.path(forResource: "09", ofType: "gif")!), options: [UNNotificationAttachmentOptionsThumbnailTimeKey:"???"])
             content.attachments = [attachment1]
             
         } catch {
@@ -159,6 +159,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         JPUSHService.registerDeviceToken(deviceToken)
+        UIPasteboard.general.string = JPUSHService.registrationID()
     }
     
     //MARK:~~~ JPUSHRegisterDelegate
