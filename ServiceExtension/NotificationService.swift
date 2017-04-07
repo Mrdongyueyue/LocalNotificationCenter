@@ -77,7 +77,7 @@ class NotificationService: UNNotificationServiceExtension, URLSessionDelegate {
                     do {
                         try fileManager.createDirectory(atPath: path!, withIntermediateDirectories: true, attributes: nil)
                         print("创建文件夹成功！！！！")
-                    } catch let attError as Error {
+                    } catch let attError {
                         print("创建文件夹失败～～～～\(attError.localizedDescription)")
                     }
                 }
@@ -88,7 +88,7 @@ class NotificationService: UNNotificationServiceExtension, URLSessionDelegate {
                     do {
                         try UIImageJPEGRepresentation(image, 1)?.write(to: URL(fileURLWithPath: path!))
                         print("写入图片成功！！！！")
-                    } catch let attError as Error {
+                    } catch let attError {
                         print("写入图片失败～～～～\(attError.localizedDescription)")
                     }
                 }
@@ -100,7 +100,7 @@ class NotificationService: UNNotificationServiceExtension, URLSessionDelegate {
                     let attachment = try UNNotificationAttachment(identifier: "remoteImage", url: url, options: [UNNotificationAttachmentOptionsThumbnailTimeKey:"???"])
                     content.attachments = [attachment]
                     print("添加附件成功！！！！")
-                } catch let attError as Error {
+                } catch let attError {
                     print("添加附件失败～～～～\(attError.localizedDescription)")
                 }
                 print(path ?? "")

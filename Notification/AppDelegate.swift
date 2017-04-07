@@ -25,8 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         
-        let action = UNTextInputNotificationAction(identifier: "action", title: "textAction", options: [.destructive], textInputButtonTitle: "send", textInputPlaceholder: "placeholder")
-        let notificationTextInputCategory = UNNotificationCategory(identifier: "notificationTextInputCategory", actions: [action], intentIdentifiers: ["action"], options: [.customDismissAction])
+        let action = UNTextInputNotificationAction(identifier: "sendAction", title: "reply", options: [.destructive, .authenticationRequired], textInputButtonTitle: "send", textInputPlaceholder: "placeholder")
+        let notificationTextInputCategory = UNNotificationCategory(identifier: "notificationTextInputCategory", actions: [action], intentIdentifiers: ["sendAction"], options: [.customDismissAction])
         
         let btnAction = UNNotificationAction(identifier: "btnAction", title: "btnAction", options: [.foreground])
         let notificationButtonActionCategory = UNNotificationCategory(identifier: "notificationButtonActionCategory", actions: [btnAction], intentIdentifiers: ["btnAction"], options: [.customDismissAction])
@@ -96,9 +96,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         content.body = "body"
         
         ///输入框的通知扩展
-        //        content.categoryIdentifier = "notificationTextInputCategory"
+                content.categoryIdentifier = "notificationTextInputCategory"
         ///按钮
-        content.categoryIdentifier = "notificationButtonActionCategory"
+//        content.categoryIdentifier = "notificationButtonActionCategory"
         
         do {
             
@@ -159,7 +159,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         JPUSHService.registerDeviceToken(deviceToken)
-        UIPasteboard.general.string = JPUSHService.registrationID()
+        JPUSHService.registrationIDCompletionHandler { (code, registrationID) in
+            UIPasteboard.general.string = registrationID
+        }
     }
     
     //MARK:~~~ JPUSHRegisterDelegate

@@ -18,10 +18,7 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any required interface initialization here.
         
-//        imageViewHeight = imageView.widthAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1)
-//        NSLayoutConstraint.activate([imageViewHeight])
     }
     
     
@@ -39,17 +36,20 @@ class NotificationViewController: UIViewController, UNNotificationContentExtensi
         }
         
         print(NSStringFromCGRect(view.frame))
-//        do {
-//            let data = try Data.init(contentsOf: (notification.request.content.attachments.last?.url)!)
-//            imageView.image = UIImage(data: data)
-//            
-//        } catch {
-//        }
-//        if let path = Bundle.main.path(forResource: "smile", ofType: "jpg") {
-//            imageView.image = UIImage(contentsOfFile: path)
-//        }
+
     }
     
+    func didReceive(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
+        if response.actionIdentifier == "sendAction" {//发送按钮
+            let textResponse = response as! UNTextInputNotificationResponse
+            
+            completion(.dismiss)
+        } else if response.actionIdentifier == "btnAction" {//按钮点击
+            completion(.dismissAndForwardAction)
+        } else {
+            completion(.dismissAndForwardAction)
+        }
+    }
     
 
 }

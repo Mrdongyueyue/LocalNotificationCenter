@@ -23,13 +23,13 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mLE-XA-iz7">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="294"/>
-                                <color key="backgroundColor" red="0.93725490199999995" green="0.2901960784" blue="0.39607843139999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="300" id="AmA-Cl-fKW"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.45882353186607361" green="0.74901962280273438" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="mLE-XA-iz7" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" id="iWt-mr-H5C"/>
                             <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="mLE-XA-iz7" secondAttribute="bottom" id="mYz-ES-2Be"/>
